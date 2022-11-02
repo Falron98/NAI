@@ -5,6 +5,7 @@ import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 from matplotlib import pyplot as plt
 
+# Range of input arrays
 x_height = np.arange(0, 61, 1)
 x_temp = np.arange(0, 51, 1)
 x_daytime = np.arange(0, 3, 1)
@@ -14,7 +15,8 @@ print(x_height)
 print(x_temp)
 print(x_daytime)
 
-
+# Defining the division of the input arrays into segments
+# (with trapmf(4 arguments) and trimf(3 arguments))
 height_lo = fuzz.trapmf(x_height, [0, 0, 0, 15])
 height_md = fuzz.trapmf(x_height, [10, 15, 20, 30])
 height_hi = fuzz.trapmf(x_height, [20, 40, 60, 60])
@@ -28,8 +30,10 @@ intensity_lo = fuzz.trimf(x_intensity, [1, 1, 50])
 intensity_md = fuzz.trimf(x_intensity, [1, 50, 100])
 intensity_hi = fuzz.trimf(x_intensity, [50, 100, 100])
 
+# Visualize this
 fig, (ax0, ax1, ax2, ax3) = plt.subplots(nrows=4, figsize=(8, 9))
 
+# Graph specification for each array and each level of it
 ax0.plot(x_height, height_lo, 'b', linewidth=1.5, label='Low')
 ax0.plot(x_height, height_md, 'g', linewidth=1.5, label='Medium')
 ax0.plot(x_height, height_hi, 'r', linewidth=1.5, label='High')
@@ -42,8 +46,8 @@ ax1.plot(x_temp, temp_hi, 'r', linewidth=1.5, label='High')
 ax1.set_title('Temperature inside')
 ax1.legend()
 
-ax2.plot(x_daytime, daytime_lo, 'b', linewidth=1.5, label='Low')
-ax2.plot(x_daytime, daytime_hi, 'r', linewidth=1.5, label='High')
+ax2.plot(x_daytime, daytime_lo, 'b', linewidth=1.5, label='Day')
+ax2.plot(x_daytime, daytime_hi, 'r', linewidth=1.5, label='Night')
 ax2.set_title('Time of day')
 ax2.legend()
 
@@ -61,6 +65,6 @@ for ax in (ax0, ax1, ax2, ax3):
     ax.get_xaxis().tick_bottom()
     ax.get_yaxis().tick_left()
 
+# Showing our graph
 plt.tight_layout()
-
 plt.show()
