@@ -1,8 +1,5 @@
-import time
-
 import numpy as np
 import skfuzzy as fuzz
-from skfuzzy import control as ctrl
 from matplotlib import pyplot as plt
 
 # Range of input arrays
