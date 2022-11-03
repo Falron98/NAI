@@ -1,4 +1,5 @@
 from rules import *
+
 """Zbiór zasad wejściowych po których wyświetlaja się output"""
 aggregated = np.fmax(np.fmax(int_activation_none, int_activation_low),
                      np.fmax(int_activation_md, int_activation_hi))

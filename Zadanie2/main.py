@@ -13,13 +13,11 @@ Przygotowanie środowiska:
 Instalacja bibliotek: numpy, skfuzzy, matplotlib
 """
 
-"""
-nump.arange - tworzy tablicę gdzie 0 - początek tablicy 61 - koniec tablicy 1-co ile występuje w niej przesunięcie wartości
-    x_height = wysokość światła (odpowiednik centymetrów, od 0 do 60 na osi)
-    x_temp = temperatura w terrarium (odpowiednik stopni celsjusza, od 0 do 50 na osi)
-    x_daytime = pora dnia (na wykresie wartości od 0 do 2, dzień albo noc)
-    x_intensivity = natężenie światła (odpowiednik tego, na ile procent jasności świeci światło w terrarium, wartości od 0 do 100)
-"""
+"""nump.arange - tworzy tablicę gdzie 0 - początek tablicy 61 - koniec tablicy 1-co ile występuje w niej przesunięcie 
+wartości x_height = wysokość światła (odpowiednik centymetrów, od 0 do 60 na osi) x_temp = temperatura w terrarium (
+odpowiednik stopni celsjusza, od 0 do 50 na osi) x_daytime = pora dnia (na wykresie wartości od 0 do 2, dzień albo 
+noc) x_intensivity = natężenie światła (odpowiednik tego, na ile procent jasności świeci światło w terrarium, 
+wartości od 0 do 100) """
 x_height = np.arange(0, 61, 1)
 x_temp = np.arange(0, 51, 1)
 x_daytime = np.arange(0, 3, 1)

@@ -17,6 +17,7 @@ który z nich spełniać, względem wprowadzonych danych (Przeniesienie danych z
         scenariuszNr = numpy.fmin(zwraca nową tablicę z najmniejszymi wartościami podanych elementów w tablicach)
                                         (poziom wysokości, poziom temperatury, pora dnia), intensywność świecenia)
 """
+
 rule1 = np.fmin(np.fmin(np.fmin(height_level_lo, temp_level_lo), daytime_level_lo), intensity_md)
 rule2 = np.fmin(np.fmin(np.fmin(height_level_lo, temp_level_md), daytime_level_lo), intensity_md)
 rule3 = np.fmin(np.fmin(np.fmin(height_level_lo, temp_level_hi), daytime_level_lo), intensity_lo)
