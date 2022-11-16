@@ -72,7 +72,33 @@ def create_csv():
         writer.writerows(temp_dataset)
 
 
+# Method for getting all info about chosen movie
+def choose_movie(movies_array):
+    result = []
+    while len(result) != 1:
+        name = input("Input name you want to check\n")
+        for l in range(len(movies_array)):
+            for c in movies_array[l]['movie']:
+                print(c)
+                if name in c:
+                    result.append(c)
+        if len(result) > 1:
+            print("Choose full name")
+            for i in result:
+                print(i)
+            result = []
+    print("Got it")
+    print(result[0])
+    movies = pd.read_csv('data/movies_data.csv')
+    for p in range(len(movies['title'])):
+        if result[0] == movies['title'][p]:
+            result = movies.iloc[p]
+            break
+    return result
+
+
 if __name__ == "__main__":
     create_csv()
     name = choose_name()[0]
     result = recommend_movie(name[0])
+    print(choose_movie(result))

@@ -56,6 +56,7 @@ def recommend_movie(picked_username):
                 print(movie_result['name'] + " == " + r)
                 tv_series_array.append(movie_result)
 
+        # Reformatting table of tv_series to match movies table
         test_dataframe = pd.DataFrame(tv_series_array, columns=tv_series_array[0].keys())
         test_dataframe_tv = test_dataframe.rename(
             columns={'first_air_date': 'release_date', 'original_name': 'original_title', 'name': 'title'},
@@ -237,4 +238,4 @@ def recommend_movie(picked_username):
     print(ranked_item_score.head(m))
     print(deranked_item_score.head(m))
 
-    return [ranked_item_score, deranked_item_score]
+    return [ranked_item_score.head(m), deranked_item_score.head(m)]
