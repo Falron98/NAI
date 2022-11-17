@@ -3,21 +3,37 @@ import csv
 import pandas as pd
 from recommender import recommend_movie
 
-# Read in data from excell
-# Fill "None" if data cell is empty
+"""
+* Dopasowywanie filmów do użytkownika, na zasadzie ocen filmów innych użytkowników *
+Program polega na wprowadzeniu w pierwszym inpucie
+imienia i nazwiska użytkownika dla którego chcemy wyszukać polecany lub odradzany film.
+W kolejnych zaś inputach, wpisujemy nazwę filmu z polecanych lub odradzanych dla którego chcemy pokazać listę filmów podobnych.
+Autorzy:
+- Bartosz Krystowski s19545
+- Robert Brzoskowski s21162
+Przygotowanie środowiska:
+Instalacja bibliotek: pandas, tmdbsimple, difflib, seaborn
+"""
+
+"""
+Odczyt danych z pliku excel'a .xlsx
+Fill "None" jeśli komurka jest pusta
+"""
 dataframe1 = pd.read_excel('./data/datasheet.xlsx')
 dataframe1.fillna("None", inplace=True)
 
-# Convert to pandas
+"""Zamiana na pandas"""
 df = pd.DataFrame(dataframe1)
 
-# Arrays for data
+"""Utworzenie tablic na dane"""
 dataset1 = []
 movie = []
 movies = []
 
+"""Wypisanie wartości bazy"""
 print(df.values[0][3])
 
+"""Przypisywanie użytkowników do filmów"""
 for i in range(len(df.values)):
     movies = []
     username = df.values[i][0]
@@ -26,12 +42,12 @@ for i in range(len(df.values)):
             movie = [df.values[i][j], df.values[i][j + 1]]
             movies.append(movie)
     dataset1.append([username, movies])
-
+"""Wypisanie przypisanych wyżej danych"""
 for t in dataset1:
     print(t)
 
 
-# Method for choosing username from dataset and checking if its in dataset
+"""Metoda sprawdzająca czy dany użytkownik istnieje w bazie"""
 def choose_name():
     result = []
     while len(result) != 1:
@@ -49,7 +65,7 @@ def choose_name():
     return result
 
 
-# Create csv from excell dataset
+"""Utworzenie pliku .csv z pliku excela wraz z wypisaniem na ekranie"""
 def create_csv():
     header = ['username', 'title', 'rating']
 
@@ -72,7 +88,7 @@ def create_csv():
         writer.writerows(temp_dataset)
 
 
-# Method for getting all info about chosen movie
+"""Metoda służąca zebraniu informacji o wybranym filmie"""
 def choose_movie(movies_array):
     result = []
     while len(result) != 1:
