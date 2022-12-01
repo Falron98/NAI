@@ -32,22 +32,29 @@ df = pf.to_numpy()
 
 """Wypisanie tych danych"""
 print(df)
-
+"""Zmienne trzymające wartości tablic z danych kolumn"""
 X = df[:, 0:1].astype(int)
 y = df[:, 1].astype(float)
 
 print(X)
 print(y)
-
+"""W związku z tym że ten akurat problem jest problemem regresywności
+ to tworzymy potem obiekt z biblioteki DecisionTreeRegressor,
+ następnie każemy mu wpasować te dane przez fit(X, y).
+ Dzielone są one następnie na dane treningowe itd"""
 regressor = DecisionTreeRegressor(random_state=0)
 
 regressor.fit(X, y)
-
+"""
+Co przewidzieć ma program
+w tym akurat przypadku przewiduje jaka będzie wartość w odniesieniu do tego co wpisze użytkownik
+"""
 input_pred = input("Enter number of claims for predicted payment: ")
 
 y_pred = regressor.predict([[input_pred]])
 
 print('Predicted payment for {0} claims is {1}'.format(input_pred, y_pred))
+
 
 """
 Utworzenie zakresu wartości od minimalnej wartości X do maksymalnej wartości X

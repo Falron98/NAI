@@ -15,19 +15,37 @@ Program przewiduje i oblicza przeciążenie przy pomocy danych.
 
 https://archive.ics.uci.edu/ml/machine-learning-databases/balance-scale/
 
+Przykład:
+
+Dataset:
+0  B  1  1  1  1
+1  R  1  1  1  2
+
+
+ID     Przeciążona strona    Waga pierwszego        Waga drugiego           Waga pierwszego         Waga drugiego
+        (R - Prawa,          odważnika strona       odważnika strona        odważnika strona        odważnika strona
+         L - Lewa,             lewa                 lewa                    prawa                   prawa
+          B - równo)
+
+0           B                     1                     1                       1                           1
+1           R                     1                     1                       1                           2
+
+
 Autorzy:
 - Bartosz Krystowski s19545
 - Robert Brzoskowski s21162
 
 Przygotowanie środowiska:
 Instalacja bibliotek: pandas, sklearn, warnings
-"""
 
+W tym przypadku dane są już podzielone na dane treningowe oraz testowe
+"""
 
 warnings.filterwarnings('ignore')
 
-
 """Funkcja importująca zestaw danych"""
+
+
 def importdata():
     balance_data = pd.read_csv(
         'data/balance-scale.data',
@@ -43,12 +61,18 @@ def importdata():
 
 
 """Funkcja do podziału zestawu danych"""
+
+
 def splitdataset(balance_data):
     """Oddzielenie zmiennej docelowej"""
     X = balance_data.values[:, 1:5]
     Y = balance_data.values[:, 0]
 
-    """Podział zestawu danych na train i test"""
+    """
+    Podział zestawu danych na treningowe i testowe
+    W tym przypadku program wyciągnął dane z tabliy i sprawdza prawdopodobieństwo przez ich podstawianie.
+    """
+
     X_train, X_test, y_train, y_test = train_test_split(
         X, Y, test_size=0.3, random_state=100)
 
@@ -56,6 +80,8 @@ def splitdataset(balance_data):
 
 
 """funkcja do przeprowadzania treningu z giniIndex"""
+
+
 def train_using_gini(X_train, X_test, y_train):
     """Tworzenie klasyfikatora"""
     clf_gini = DecisionTreeClassifier(criterion="gini",
@@ -67,6 +93,8 @@ def train_using_gini(X_train, X_test, y_train):
 
 
 """Funkcja do wykonywania treningu z entropią"""
+
+
 def tarin_using_entropy(X_train, X_test, y_train):
     """Drzewo decyzyjne z entropy"""
     clf_entropy = DecisionTreeClassifier(
@@ -79,6 +107,8 @@ def tarin_using_entropy(X_train, X_test, y_train):
 
 
 """Funkcja do przewidywania"""
+
+
 def prediction(X_test, clf_object):
     """Przewidywanie na teście z giniIndex"""
     y_pred = clf_object.predict(X_test)
@@ -88,6 +118,8 @@ def prediction(X_test, clf_object):
 
 
 """Funkcja do obliczania dokładności"""
+
+
 def cal_accuracy(y_test, y_pred):
     print("Confusion Matrix: ",
           confusion_matrix(y_test, y_pred))
@@ -100,6 +132,8 @@ def cal_accuracy(y_test, y_pred):
 
 
 """Main code"""
+
+
 def main():
     """Faza budowy, import danych"""
     data = importdata()
