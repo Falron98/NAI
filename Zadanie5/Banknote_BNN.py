@@ -1,8 +1,3 @@
-# banknote_bnn.py
-# Banknote classification
-# PyTorch 1.6.0-CPU Anaconda3-2020.02  Python 3.7.6
-# Windows 10 
-
 import numpy as np
 import torch as T
 
