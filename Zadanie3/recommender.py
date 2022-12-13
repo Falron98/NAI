@@ -7,14 +7,15 @@ from difflib import SequenceMatcher
 
 import seaborn as sns
 
-
 """Metoda zbierająca rekomendacje dla użytkowników w bazie"""
+
+
 def recommend_movie(picked_username):
     """Metoda szukająca filmy użytkowników w bazie"""
+
     def search_in_api(ratings):
         """Token wymagany do połączenia z baza danych"""
         tmdb.API_KEY = "5d7af906802f4ffd3fbdb7c1d9b25b68"
-
 
         """Tablice do przechowywania wyszukanych filmów i seriali"""
         movies_arr = []
@@ -72,13 +73,13 @@ def recommend_movie(picked_username):
         return movies
 
     """Metoda do tworzenia bazy danych filmów w pliku csv, jeśli do tej pory jeszcze jej nie było"""
+
     def create_csv(movies):
         if not exists('data/movies_data.csv'):
             with open('data/movies_data.csv', 'w', encoding='UTF8', newline='') as f:
                 pass
 
         movies.to_csv('data/movies_data.csv', index=False)
-
 
     """
     Wczytywanie danych o użytkownikach, filmach i ocenach
@@ -128,7 +129,7 @@ def recommend_movie(picked_username):
                                           number_of_ratings=('rating', 'count')).reset_index()
 
     """Zachowaj filmy z oceną powyżej 1"""
-    agg_ratings_GT100 = agg_ratings[agg_ratings['number_of_ratings'] > 0]
+    agg_ratings_GT100 = agg_ratings[agg_ratings['number_of_ratings'] > 1]
     print(agg_ratings_GT100['title'])
 
     """Sprawdza popularne filmy"""
