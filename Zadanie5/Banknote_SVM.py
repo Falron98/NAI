@@ -28,12 +28,6 @@ linear_svc_classifier_prediction = linear_svc_classifier.predict(x_test)
 
 print(confusion_matrix(y_test, linear_svc_classifier_prediction))
 
-
 print(classification_report(y_test, linear_svc_classifier_prediction))
 
-
-
-print("accuracy of linear svm", accuracy_score(y_test, linear_svc_classifier_prediction)*100,"%")
-
-
-
+print("accuracy of linear svm", accuracy_score(y_test, linear_svc_classifier_prediction) * 100, "%")
