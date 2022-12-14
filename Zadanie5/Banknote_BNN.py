@@ -28,8 +28,6 @@ class BanknoteDataset(T.utils.data.Dataset):
         self.y_data = T.tensor(all_data[:, 4],
                                dtype=T.float32).to(device)
 
-        # n_vals = len(self.y_data)
-        # self.y_data = self.y_data.reshape(n_vals,1)
         self.y_data = self.y_data.reshape(-1, 1)
 
     def __len__(self):
@@ -41,9 +39,6 @@ class BanknoteDataset(T.utils.data.Dataset):
         preds = self.x_data[idx, :]  # idx rows, all 4 cols
         lbl = self.y_data[idx, :]  # idx rows, the 1 col
         sample = {'predictors': preds, 'target': lbl}
-        # sample = dict()   # or sample = {}
-        # sample["predictors"] = preds
-        # sample["target"] = lbl
 
         return sample
 
@@ -149,8 +144,6 @@ def main():
     bat_size = 10
     train_ldr = T.utils.data.DataLoader(train_ds,
                                         batch_size=bat_size, shuffle=True)
-    # test_ldr = T.utils.data.DataLoader(test_ds,
-    #   batch_size=1, shuffle=False)  # not needed
 
     # 2. create neural network
     print("Creating 4-(8-8)-1 binary NN classifier ")
@@ -184,8 +177,6 @@ def main():
 
             loss_val = loss_obj(oupt, Y)  # a tensor
             epoch_loss += loss_val.item()  # accumulate
-            # epoch_loss += loss_val  # is OK
-            # epoch_loss_custom += my_bce(net, batch)
 
             optimizer.zero_grad()  # reset all gradients
             loss_val.backward()  # compute all gradients
@@ -194,8 +185,7 @@ def main():
         if epoch % ep_log_interval == 0:
             print("epoch = %4d   loss = %0.4f" % \
                   (epoch, epoch_loss))
-            # print("custom loss = %0.4f" % epoch_loss_custom)
-            # print("")
+
     print("Done ")
 
     # ----------------------------------------------------------
@@ -209,32 +199,10 @@ def main():
     print("Accuracy on test data = %0.2f%%" % \
           (acc_test * 100))
 
-    # acc_train_c = acc_coarse(net, train_ds)
-    # print("Accuracy on train data = %0.2f%%" % \
-    #  (acc_train_c * 100))
-    # acc_test_c = acc_coarse(net, test_ds)
-    # print("Accuracy on test data = %0.2f%%" % \
-    #  (acc_test_c * 100))
-
     # 5. save model
     print("\nSaving trained model state_dict \n")
     path = ".\\Models\\banknote_sd_model.pth"
     T.save(net.state_dict(), path)
-
-    # print("\nSaving entire model \n")
-    # path = ".\\Models\\banknote_full_model.pth"
-    # T.save(net, path
-
-    # print("\nSaving trained model as ONNX \n")
-    # path = ".\\Models\\banknote_onnx_model.onnx"
-    # dummy = T.tensor([[0.5, 0.5, 0.5, 0.5]],
-    #   dtype=T.float32).to(device)
-    # T.onnx.export(net, dummy, path,
-    #   input_names=["input1"],
-    #  output_names=["output1"])
-
-    # model = Net()  # later . .
-    # model.load_state_dict(T.load(path))
 
     # 6. make a prediction
     raw_inpt = np.array([[4.4, 1.8, -5.6, 3.2]],
