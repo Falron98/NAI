@@ -1,19 +1,16 @@
 import warnings
 from itertools import chain
 
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-
+import numpy as np
 import torch
 import torch.nn as nn
-from sklearn import metrics
-from torch.autograd import Variable
-
 import torchvision
 import torchvision.transforms as transforms
-from torch.utils.data import Dataset, DataLoader
+from sklearn import metrics
 from sklearn.metrics import confusion_matrix
+from torch.autograd import Variable
+from torch.utils.data import Dataset
 
 warnings.filterwarnings('ignore')
 

@@ -47,7 +47,7 @@ class BanknoteDataset(T.utils.data.Dataset):
 
 def accuracy(model, ds):
     # ds is a iterable Dataset of Tensors
-    n_correct = 0;
+    n_correct = 0
     n_wrong = 0
 
     # alt: create DataLoader and then enumerate it
