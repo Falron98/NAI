@@ -1,6 +1,18 @@
 import numpy as np
 import torch as T
+"""
+* klasyfikacja autentyczności banknotów BNN *
 
+Dataset: https://archive.ics.uci.edu/ml/datasets/banknote+authentication
+
+Autorzy:
+- Bartosz Krystowski s19545
+- Robert Brzoskowski s21162
+
+Przygotowanie środowiska:
+Instalacja bibliotek: pandas, numpy
+"""
+"""CPU jako domyslne urządzenie do obliczeń"""
 device = T.device("cpu")  # apply to Tensor or Module
 
 
@@ -17,22 +29,29 @@ device = T.device("cpu")  # apply to Tensor or Module
 # train: 1097 items (80%), test: 275 item (20%)
 
 class BanknoteDataset(T.utils.data.Dataset):
-
+    """Metoda __init__() rozpoczyna się od wczytania wszystkich odpowiednich danych z pliku do pamięci za pomocą funkcji NumPy loadtxt():
+    Dane są wczytywane do macierzy NumPy jako wartości typu float32
+    """
     def __init__(self, src_file, num_rows=None):
         all_data = np.loadtxt(src_file, max_rows=num_rows,
                               usecols=range(1, 6), delimiter="\t", skiprows=0,
                               dtype=np.float32)  # strip IDs off
-
+        """Po wczytaniu wszystkich danych do pamięci wiersze predyktorów są wyodrębniane, 
+        a następnie konwertowane na tensory PyTorch:"""
         self.x_data = T.tensor(all_data[:, 0:4],
                                dtype=T.float32).to(device)
         self.y_data = T.tensor(all_data[:, 4],
                                dtype=T.float32).to(device)
 
         self.y_data = self.y_data.reshape(-1, 1)
-
+    """Metoda __len__ zwracająca rzeczywistą liczbę wierszy odczytanych danych"""
     def __len__(self):
         return len(self.x_data)
 
+    """Metoda __getitem__ zwraca jeden lub więcej elementów danych jako obiekt słownika, 
+    w którym klucz „predyktorów” podaje wartości x predyktora, 
+    a klucz „target” daje wartości docelowe 0 lub 1.
+    Metoda zaczyna się od sprawdzenia parametru idx, aby zobaczyć, czy jest to tensor PyTorch, a jeśli tak, konwertuje tensor na zwykłą listę. """
     def __getitem__(self, idx):
         if T.is_tensor(idx):
             idx = idx.tolist()
@@ -46,11 +65,11 @@ class BanknoteDataset(T.utils.data.Dataset):
 # ---------------------------------------------------------
 
 def accuracy(model, ds):
-    # ds is a iterable Dataset of Tensors
+    """ds jest iterowalnym zestawem danych tensorów"""
     n_correct = 0
     n_wrong = 0
 
-    # alt: create DataLoader and then enumerate it
+    """utwórz DataLoader, a następnie wylicz go"""
     for i in range(len(ds)):
         inpts = ds[i]['predictors']
         target = ds[i]['target']  # float32  [0.0] or [1.0]
@@ -84,7 +103,6 @@ def acc_coarse(model, ds):
 # ----------------------------------------------------------
 
 def my_bce(model, batch):
-    # mean binary cross entropy error. somewhat slow
     sum = 0.0
     inpts = batch['predictors']
     targets = batch['target']
@@ -127,12 +145,11 @@ class Net(T.nn.Module):
 # ----------------------------------------------------------
 
 def main():
-    # 0. get started
     print("\nBanknote authentication using PyTorch \n")
     T.manual_seed(1)
     np.random.seed(1)
 
-    # 1. create Dataset and DataLoader objects
+    """tworzy obiekty Dataset i DataLoader"""
     print("Creating Banknote train and test DataLoader ")
 
     train_file = ".\\Data\\banknote_k20_train.txt"
@@ -145,11 +162,11 @@ def main():
     train_ldr = T.utils.data.DataLoader(train_ds,
                                         batch_size=bat_size, shuffle=True)
 
-    # 2. create neural network
+    """tworzenie sieci neuronowej"""
     print("Creating 4-(8-8)-1 binary NN classifier ")
     net = Net().to(device)
 
-    # 3. train network
+    """Trening"""
     print("\nPreparing training")
     net = net.train()  # set training mode
     lrn_rate = 0.01
@@ -190,7 +207,7 @@ def main():
 
     # ----------------------------------------------------------
 
-    # 4. evaluate model
+    """Ocena modelu"""
     net = net.eval()
     acc_train = accuracy(net, train_ds)
     print("\nAccuracy on train data = %0.2f%%" % \
@@ -199,12 +216,12 @@ def main():
     print("Accuracy on test data = %0.2f%%" % \
           (acc_test * 100))
 
-    # 5. save model
+    """Zapis modelu"""
     print("\nSaving trained model state_dict \n")
     path = ".\\Models\\banknote_sd_model.pth"
     T.save(net.state_dict(), path)
 
-    # 6. make a prediction
+    """Wykonanie predykcji"""
     raw_inpt = np.array([[4.4, 1.8, -5.6, 3.2]],
                         dtype=np.float32)
     norm_inpt = raw_inpt / 20

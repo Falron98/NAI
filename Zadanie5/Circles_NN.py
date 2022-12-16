@@ -10,17 +10,40 @@ import numpy as np
 import seaborn as sns
 from torch import nn
 from torch.utils.data import Dataset, DataLoader
+"""
+*Duży okrąg zawierający mniejszy okrąg w 2d.*
 
+Prosty zestaw danych do wizualizacji algorytmów grupowania i klasyfikacji.
+
+Autorzy:
+- Bartosz Krystowski s19545
+- Robert Brzoskowski s21162
+
+Przygotowanie środowiska:
+Instalacja bibliotek: itertools, matplotlib, sklearn, warnings, torch, numpy, seaborn
+
+
+              precision    recall  f1-score   support
+
+        0.0       0.98      0.97      0.98      1635
+        1.0       0.98      0.98      0.98      1665
+
+    accuracy                           0.98      3300
+  macro avg       0.98      0.98      0.98      3300
+weighted avg       0.98      0.98      0.98      3300
+
+
+"""
 warnings.filterwarnings("ignore")
 
-# Create a dataset with 10,000 samples.
+"""Utworzony zostaje dataset posiadający 10 000 elementów"""
 X, y = make_circles(n_samples = 10000,
                     noise= 0.05,
                     random_state=26)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=26)
 
-# Visualize the data.
+"""Wizualizacja danych, umiejscowienie na osiach i nazwanie ich wraz z wyświetleniem"""
 fig, (train_ax, test_ax) = plt.subplots(ncols=2, sharex=True, sharey=True, figsize=(10, 5))
 train_ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=plt.cm.Spectral)
 train_ax.set_title("Training Data")
@@ -33,7 +56,7 @@ test_ax.set_title("Testing data")
 plt.show()
 
 
-# Convert data to torch tensors
+"""Konwersja danych na tensory"""
 class Data(Dataset):
     def __init__(self, X, y):
         self.X = torch.from_numpy(X.astype(np.float32))
@@ -49,14 +72,14 @@ class Data(Dataset):
 
 batch_size = 64
 
-# Instantiate training and test data
+"""Utworzenie danych treningowych i testowych"""
 train_data = Data(X_train, y_train)
 train_dataloader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
 
 test_data = Data(X_test, y_test)
 test_dataloader = DataLoader(dataset=test_data, batch_size=batch_size, shuffle=True)
 
-# Check it's working
+"""Sprawdzanie"""
 for batch, (X, y) in enumerate(train_dataloader):
     print(f"Batch: {batch + 1}")
     print(f"X shape: {X.shape}")
@@ -91,13 +114,13 @@ optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 num_epochs = 100
 loss_values = []
-# since we're not training, we don't need to calculate the gradients for our outputs
+"""ponieważ nie trenujemy, nie musimy obliczać gradientów dla naszych wyników"""
 for epoch in range(num_epochs):
     for X, y in train_dataloader:
-        # zero the parameter gradients
+        """Wyzerowanie gradientu"""
         optimizer.zero_grad()
 
-        # forward + backward + optimize
+        """forward + backward + optimize"""
         pred = model(X)
         loss = loss_fn(pred, y.unsqueeze(-1))
         loss_values.append(loss.item())
