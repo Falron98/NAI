@@ -77,10 +77,10 @@ while True:
             scaling = ((x2+y2)-(x1+y1))/50
 
             # Jeśli dystans między powiekami jest mniejszy niż 15px dystansu między oczami, oznacza to zamknięcie oka
-            if left_eye_height < (2*scaling) and right_eye_height < (2*scaling):
+            if (left_eye_height + right_eye_height)/2 < (1.8*scaling):
                 cv2.putText(frame, "Eyes: closed", (0, 50), font, 1, (255,255,255), 2)
                 is_paused = True
-            elif left_eye_height >= (2*scaling) and right_eye_height >= (2*scaling):
+            elif (left_eye_height + right_eye_height)/2 >= (1.8*scaling):
                 cv2.putText(frame, "Eyes: opened", (0, 50), font, 1, (255,255,255), 2)
                 is_paused = False
 
